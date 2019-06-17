@@ -1,0 +1,29 @@
+{
+    "name": "decorate/image-uploadable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "take",
+            "email": "ishizuka@shrp.jp"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "decorate/image-upload": "^1.0.12"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "mockery/mockery": "^1.2",
+        "orchestra/testbench": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Decorate\\Extentions\\": "src/",
+            "Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "minimum-stability": "dev"
+}
