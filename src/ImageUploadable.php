@@ -1,6 +1,6 @@
 <?php
 
-namespace Decorate\Extentions;
+namespace Decorate\Extensions;
 
 use Decorate\Facades\ImageUpload;
 
