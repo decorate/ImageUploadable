@@ -7,6 +7,8 @@ use Decorate\Facades\ImageUpload;
 trait ImageUploadable {
 
     static $cachePath = null;
+    static $pathName = 'path';
+    static $imageId = 'id';
 
     public static function boot() {
         parent::boot();
@@ -16,9 +18,9 @@ trait ImageUploadable {
         self::creating(function ($image) {
             self::creatingBefore($image);
 
-            if(ImageUpload::isBase64($image->path)) {
-                self::$cachePath = $image->path;
-                $image->path = 'tmp';
+            if(ImageUpload::isBase64($image[self::$pathName])) {
+                self::$cachePath = $image[self::$pathName];
+                $image[self::$pathName] = 'tmp';
             }
 
             self::creatingAfter($image);
@@ -38,10 +40,10 @@ trait ImageUploadable {
         self::updating(function ($image) {
             self::updatingBefore($image);
 
-            if(ImageUpload::isBase64($image->path)) {
+            if(ImageUpload::isBase64($image[self::$pathName])) {
                 $d = self::getDir($image);
                 ImageUpload::deleteDirectory($d);
-                self::saveImage($image->path, $image);
+                self::saveImage($image[self::$pathName], $image);
             }
 
             self::updatingAfter($image);
@@ -63,13 +65,13 @@ trait ImageUploadable {
     private static function saveImage($source, $image) {
         $file = ImageUpload::createUploadFile($source);
         $dir = self::getDir($image);
-        $image->path = ImageUpload::saveMultiImage($file, $dir);
+        $image[self::$pathName] = ImageUpload::saveMultiImage($file, $dir);
         $image->save();
     }
 
     private static function getDir($image) {
         $d = rtrim(self::$saveDir, '/');
-        return "{$d}/{$image->id}";
+        return "{$d}/{$image[self::$imageId]}";
     }
 
     static function bootBefore() {
